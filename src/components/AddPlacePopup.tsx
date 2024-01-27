@@ -1,26 +1,32 @@
-import React, { useState } from "react";
+import { FormEvent, ChangeEvent, useState } from "react";
 import "../index.css";
 import PopupWithForm from "./PopupWithForm";
+import { Card } from "../types";
 
-function AddPlacePopup(props) {
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+  onAddPlace: (card: Card) => void;
+};
 
-  const [name, setName] = useState('');
-  const [link, setLink] = useState('')
+function AddPlacePopup(props: Props) {
+  const [name, setName] = useState("");
+  const [link, setLink] = useState("");
 
-  function handleSubmit(e) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     props.onAddPlace({
       name,
-      link
+      link,
     });
   }
 
-  function handleChangeName(e) {
+  function handleChangeName(e: ChangeEvent<HTMLInputElement>) {
     setName(e.target.value);
   }
 
-  function handleChangeLInk(e) {
+  function handleChangeLInk(e: ChangeEvent<HTMLInputElement>) {
     setLink(e.target.value);
   }
 
@@ -41,8 +47,8 @@ function AddPlacePopup(props) {
           id="input-place"
           required
           placeholder="Название"
-          minLength="2"
-          maxLength="30"
+          minLength={2}
+          maxLength={30}
           value={name}
           onChange={handleChangeName}
         />
@@ -63,8 +69,7 @@ function AddPlacePopup(props) {
       </label>
       "
     </PopupWithForm>
-  )
-
+  );
 }
 
 export default AddPlacePopup;

@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import "../index.css";
 import PopupWithForm from "./PopupWithForm";
-import CurrentUserContext from "../contexts/CurrentUserContext"
+import CurrentUserContext from "../contexts/CurrentUserContext";
+import { User } from "../types";
 
-function editProfilePopup(props) {
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+  onUpdateUser: (user: Pick<User, "name" | "about">) => void;
+};
 
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('')
+function editProfilePopup(props: Props) {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
 
   const currentUser = React.useContext(CurrentUserContext);
 
@@ -15,8 +21,7 @@ function editProfilePopup(props) {
     setDescription(currentUser.about);
   }, [currentUser]);
 
-
-  function handleSubmit(e) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     props.onUpdateUser({
@@ -25,11 +30,11 @@ function editProfilePopup(props) {
     });
   }
 
-  function handleChangeName(e) {
+  function handleChangeName(e: ChangeEvent<HTMLInputElement>) {
     setName(e.target.value);
   }
 
-  function handleChangeNDescription(e) {
+  function handleChangeNDescription(e: ChangeEvent<HTMLInputElement>) {
     setDescription(e.target.value);
   }
 
@@ -50,8 +55,8 @@ function editProfilePopup(props) {
           id="input-name"
           required
           placeholder="Имя"
-          minLength="2"
-          maxLength="40"
+          minLength={2}
+          maxLength={40}
           value={name}
           onChange={handleChangeName}
         />
@@ -65,15 +70,15 @@ function editProfilePopup(props) {
           id="input-about"
           required
           placeholder="Род деятельности"
-          minLength="2"
-          maxLength="200"
+          minLength={2}
+          maxLength={200}
           value={description}
           onChange={handleChangeNDescription}
         />
         <span className="popup__input-error input-about-error"></span>
       </label>
     </PopupWithForm>
-  )
+  );
 }
 
 export default editProfilePopup;

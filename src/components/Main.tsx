@@ -2,9 +2,25 @@ import React from "react";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import "../index.css";
 import Card from "./Card";
+import { Card as cardType } from "../types";
 
-function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick, cards, onCardLike, onCardDelete }) {
-
+function Main({
+  onEditAvatar,
+  onAddPlace,
+  onEditProfile,
+  onCardClick,
+  cards,
+  onCardLike,
+  onCardDelete,
+}: {
+  onEditAvatar: (isOpen: boolean) => void;
+  onAddPlace: (isOpen: boolean) => void;
+  onEditProfile: (isOpen: boolean) => void;
+  onCardClick: (card: cardType) => void;
+  cards: cardType[];
+  onCardLike: (card: cardType) => void;
+  onCardDelete: (card: cardType) => void;
+}) {
   const user = React.useContext(CurrentUserContext);
 
   function handleEditAvatarClick() {
@@ -51,8 +67,8 @@ function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick, cards, onC
           ></button>
         </div>
         <ul className="cards">
-          {cards.map((card) => (
-            < Card
+          {cards.map((card: cardType) => (
+            <Card
               card={card}
               key={card._id}
               onCardClick={onCardClick}

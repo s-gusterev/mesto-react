@@ -1,11 +1,21 @@
+type Types = {
+  baseUrl: string;
+  headers: {
+    authorization: string;
+    "Content-Type": string;
+  };
+};
+
 class Api {
-  constructor({ baseUrl, headers }) {
+  private _headers: {};
+  private _baseUrl: string;
+  constructor({ baseUrl, headers }: Types) {
     this._headers = headers;
     this._baseUrl = baseUrl;
   }
 
   // Проверяем ответ от сервера
-  _checkResponse(res) {
+  _checkResponse(res: { ok: any; json: () => any; status: any; }) {
     if (res.ok) {
       // Если все ок - получаем первоначальный ответ от сервера
       return res.json(); // Читаем ответ в формате json
@@ -28,7 +38,7 @@ class Api {
   }
 
   // Редактирование профиля
-  editProfile(name, about) {
+  editProfile(name: string, about: string) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers: this._headers,
@@ -40,7 +50,7 @@ class Api {
   }
 
   // Добавление карточки
-  addCard(name, link) {
+  addCard(name: string, link: string) {
     return fetch(`${this._baseUrl}/cards`, {
       method: "POST",
       headers: this._headers,
@@ -52,7 +62,7 @@ class Api {
   }
 
   // Удаление карточки
-  delCard(id) {
+  delCard(id: string | number) {
     return fetch(`${this._baseUrl}/cards/${id}`, {
       method: "DELETE",
       headers: this._headers,
@@ -60,7 +70,7 @@ class Api {
   }
 
   // Удаление лайка
-  deleteLike(id) {
+  deleteLike(id: string | number) {
     return fetch(`${this._baseUrl}/cards/${id}/likes`, {
       method: "DELETE",
       headers: this._headers,
@@ -68,19 +78,19 @@ class Api {
   }
 
   // Добавление лайка
-  addLike(id) {
+  addLike(id:string | number) {
     return fetch(`${this._baseUrl}/cards/${id}/likes`, {
       method: "PUT",
       headers: this._headers,
     }).then(this._checkResponse);
   }
 
-  changeLikeCardStatus(id, isLiked) {
-    return isLiked ? this.addLike(id) : this.deleteLike(id)
+  changeLikeCardStatus(id: string | number , isLiked: boolean) {
+    return isLiked ? this.addLike(id) : this.deleteLike(id);
   }
 
   // Обновление аватара
-  updateAvatar(avatar) {
+  updateAvatar(avatar: string) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,

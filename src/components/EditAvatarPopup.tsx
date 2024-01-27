@@ -1,16 +1,23 @@
-import React, { useRef } from "react";
+import { useRef, FormEvent } from "react";
 import "../index.css";
 import PopupWithForm from "./PopupWithForm";
 
-function editAvatarPopup(props) {
+import { User } from "../types";
 
-  const valueRef = useRef();
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+  onUpdateAvatar: (user: Pick<User, "avatar">) => void;
+};
 
-  function handleSubmit(e) {
+function editAvatarPopup(props: Props) {
+  const valueRef = useRef<HTMLInputElement>(null!);
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     props.onUpdateAvatar({
-      avatar: valueRef.current.value
+      avatar: valueRef.current.value,
     });
   }
 
@@ -36,7 +43,7 @@ function editAvatarPopup(props) {
         <span className="popup__input-error input-avatar-error"></span>
       </label>
     </PopupWithForm>
-  )
+  );
 }
 
 export default editAvatarPopup;
