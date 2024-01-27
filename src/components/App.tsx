@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
 import "../index.css";
 import api from "../utils/api";
 import Header from "./Header";
@@ -174,26 +175,32 @@ function App() {
         />
 
         <Footer />
+        <AnimatePresence mode="wait">
+          {isEditProfilePopupOpen && (
+            <EditProfilePopup
+              onClose={closeAllPopups}
+              onUpdateUser={handleUpdateUser}
+            />
+          )}
 
-        <EditProfilePopup
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-          onUpdateUser={handleUpdateUser}
-        />
+          {isAddPlacePopupOpen && (
+            <AddPlacePopup
+              onClose={closeAllPopups}
+              onAddPlace={handleAddPlaceSubmit}
+            />
+          )}
 
-        <EditAvatarPopup
-          isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-          onUpdateAvatar={handleUpdateAvatar}
-        />
+          {isEditAvatarPopupOpen && (
+            <EditAvatarPopup
+              onClose={closeAllPopups}
+              onUpdateAvatar={handleUpdateAvatar}
+            />
+          )}
 
-        <AddPlacePopup
-          isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}
-          onAddPlace={handleAddPlaceSubmit}
-        />
-
-        <ImagePopup onClose={closeAllPopups} card={selectedCard} />
+          {selectedCard.isOpen && (
+            <ImagePopup onClose={closeAllPopups} card={selectedCard} />
+          )}
+        </AnimatePresence>
       </div>
     </CurrentUserContext.Provider>
   );

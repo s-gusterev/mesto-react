@@ -7,7 +7,7 @@
   height: 19px;
   background-size: cover;
   cursor: pointer;
-  transition: background-image 250ms ease;
+  /* transition: background-image 250ms ease; */
 }
 
 .card__like:hover {

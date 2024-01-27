@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import CurrentUserContext from "../contexts/CurrentUserContext";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { Card as cardType } from "../types";
 
@@ -39,10 +40,6 @@ function Card({
 
   const isLiked = checkIsLiked(card);
 
-  const cardLikeButtonClassName = `card__like ${
-    isLiked ? "card__like_active" : ""
-  }`;
-
   const counterLikes = (card: cardType) => {
     if (!card.likes) {
       return 0;
@@ -65,29 +62,45 @@ function Card({
   }
 
   return (
-    <li className="card">
-      <div className="card__text">
-        <h2 className="card__title">{card.name}</h2>
-        <div className="card__like-section">
-          <button
-            className={cardLikeButtonClassName}
-            type="button"
-            onClick={handleLikeClick}
-          ></button>
-          <span className="card__like-info">{likes}</span>
+    <AnimatePresence initial={false} mode="wait">
+      <li className="card">
+        <div className="card__text">
+          <h2 className="card__title">{card.name}</h2>
+          <div className="card__like-section">
+            {isLiked && (
+              <motion.button
+                key={`key-like-${card._id}`}
+                initial={{ opacity: 0, scale: 2 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.7 }}
+                className="card__like card__like_active"
+                type="button"
+                onClick={handleLikeClick}
+              ></motion.button>
+            )}
+            {!isLiked && (
+              <button
+                className="card__like"
+                type="button"
+                onClick={handleLikeClick}
+              ></button>
+            )}
+
+            <span className="card__like-info">{likes}</span>
+          </div>
         </div>
-      </div>
-      <div
-        className="card__img"
-        style={{ backgroundImage: `url(${card.link})` }}
-        onClick={handleClick}
-      ></div>
-      <button
-        className={cardDeleteButtonClassName}
-        type="button"
-        onClick={handleDeleteClick}
-      ></button>
-    </li>
+        <div
+          className="card__img"
+          style={{ backgroundImage: `url(${card.link})` }}
+          onClick={handleClick}
+        ></div>
+        <button
+          className={cardDeleteButtonClassName}
+          type="button"
+          onClick={handleDeleteClick}
+        ></button>
+      </li>
+    </AnimatePresence>
   );
 }
 

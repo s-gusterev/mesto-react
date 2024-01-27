@@ -5,7 +5,6 @@ import CurrentUserContext from "../contexts/CurrentUserContext";
 import { User } from "../types";
 
 type Props = {
-  isOpen: boolean;
   onClose: () => void;
   onUpdateUser: (user: Pick<User, "name" | "about">) => void;
 };
@@ -43,7 +42,6 @@ function editProfilePopup(props: Props) {
       title="Редактировать профиль"
       name="profile"
       btnText="Сохранить"
-      isOpen={props.isOpen}
       onClose={props.onClose}
       onSubmit={handleSubmit}
     >

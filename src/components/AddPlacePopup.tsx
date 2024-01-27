@@ -4,7 +4,6 @@ import PopupWithForm from "./PopupWithForm";
 import { Card } from "../types";
 
 type Props = {
-  isOpen: boolean;
   onClose: () => void;
   onAddPlace: (card: Card) => void;
 };
@@ -35,7 +34,6 @@ function AddPlacePopup(props: Props) {
       title="Новое место"
       name="card-add"
       btnText="Создать"
-      isOpen={props.isOpen}
       onClose={props.onClose}
       onSubmit={handleSubmit}
     >

@@ -66,6 +66,7 @@ function Main({
             onClick={handleAddPlaceClick}
           ></button>
         </div>
+
         <ul className="cards">
           {cards.map((card: cardType) => (
             <Card

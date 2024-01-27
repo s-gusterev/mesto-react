@@ -1,11 +1,11 @@
 import { useRef, FormEvent } from "react";
+
 import "../index.css";
 import PopupWithForm from "./PopupWithForm";
 
 import { User } from "../types";
 
 type Props = {
-  isOpen: boolean;
   onClose: () => void;
   onUpdateAvatar: (user: Pick<User, "avatar">) => void;
 };
@@ -26,7 +26,6 @@ function editAvatarPopup(props: Props) {
       title="Обновить аватар"
       name="edit-avatar"
       btnText="Обновить"
-      isOpen={props.isOpen}
       onClose={props.onClose}
       onSubmit={handleSubmit}
     >

@@ -1,11 +1,11 @@
 import { FormEvent } from "react";
+import { motion } from "framer-motion";
 import "../index.css";
 
 type PopupWithFormProps = {
   name: string;
   title: string;
   btnText: string;
-  isOpen: boolean;
   onClose: () => void;
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
   children: React.ReactNode;
@@ -13,12 +13,20 @@ type PopupWithFormProps = {
 
 function PopupWithForm(props: PopupWithFormProps) {
   return (
-    <div
-      className={`${
-        props.isOpen ? "popup_opened" : ""
-      } popup popup_background_light popup_type_${props.name} root__popup`}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.7 }}
+      key={props.name}
+      className={`popup popup_opened popup_background_light popup_type_${props.name} root__popup`}
     >
-      <form
+      <motion.form
+        initial={{ opacity: 0, y: -100 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 100 }}
+        transition={{ duration: 0.3 }}
+        key={props.title}
         className="popup__container popup__container_type_form"
         name={props.name}
         // noValidate
@@ -37,8 +45,8 @@ function PopupWithForm(props: PopupWithFormProps) {
           aria-label="Закрыть"
           onClick={props.onClose}
         ></button>
-      </form>
-    </div>
+      </motion.form>
+    </motion.div>
   );
 }
 
