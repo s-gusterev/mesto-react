@@ -19,7 +19,7 @@ function PopupWithForm(props: PopupWithFormProps) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.7 }}
       key={props.name}
-      className={`popup popup_opened popup_background_light popup_type_${props.name} root__popup`}
+      className={`popup popup_background_light popup_type_${props.name} root__popup`}
     >
       <motion.form
         initial={{ opacity: 0, y: -100 }}

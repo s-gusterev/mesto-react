@@ -29,7 +29,7 @@
 @import url(./blocks/card/__del/card__del.css);
 @import url(./blocks/footer/__copyright/footer__copyright.css);
 @import url(./blocks/popup/popup.css);
-@import url(./blocks/popup/_opened/popup_opened.css);
+/* @import url(./blocks/popup/_opened/popup_opened.css); */
 @import url(./blocks/popup/__btn/popup__btn.css);
 @import url(./blocks/popup/__btn/_type_confirm/popup__btn_type_confirm.css);
 @import url(./blocks/popup/__close/popup__close.css);

@@ -10,7 +10,7 @@ function ImagePopup({ card, onClose }: { card: Card; onClose: () => void }) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
       key={card._id}
-      className={`popup popup_opened popup_background_dark popup_type_picture root__popup`}
+      className="popup popup_background_dark popup_type_picture root__popup"
     >
       <motion.div
         className="popup__container"

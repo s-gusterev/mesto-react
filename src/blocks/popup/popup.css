@@ -4,9 +4,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  visibility: hidden;
+  /* visibility: hidden;
   opacity: 0;
-  transition: visibility 450ms, opacity 450ms ease-in-out;
+  transition: visibility 450ms, opacity 450ms ease-in-out; */
   /* z-index: -1; */
 }
 
@@ -19,7 +19,7 @@
   height: 100%;
   background-color: #000;
   /* opacity: .5; */
-  transition: opacity 350ms linear;
+  /* transition: opacity 350ms linear; */
   z-index: -1;
 }
 
