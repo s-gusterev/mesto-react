@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../utils/api";
 import { User } from "../types";
+import { setSuccess, setLoading, setError } from "./utils";
 
 // Получение юзера
 export const getProfile = createAsyncThunk(
@@ -46,23 +47,23 @@ export const updateUserProfile = createAsyncThunk(
   }
 );
 
-const setError = (
-  state: { status: any; error: any },
-  action: { payload: any }
-) => {
-  state.status = "rejected";
-  state.error = action.payload;
-};
+// const setError = (
+//   state: { status: any; error: any },
+//   action: { payload: any }
+// ) => {
+//   state.status = "rejected";
+//   state.error = action.payload;
+// };
 
-const setLoading = (state: { status: any; error: any }) => {
-  state.status = "pending";
-  state.error = null;
-};
+// const setLoading = (state: { status: any; error: any }) => {
+//   state.status = "pending";
+//   state.error = null;
+// };
 
-const setSuccess = (state: { status: any; error: any }) => {
-  state.status = "resolved";
-  state.error = null;
-};
+// const setSuccess = (state: { status: any; error: any }) => {
+//   state.status = "resolved";
+//   state.error = null;
+// };
 
 const userSlice = createSlice({
   name: "user",
@@ -87,8 +88,9 @@ const userSlice = createSlice({
       };
     });
 
-    builder.addCase(getProfile.fulfilled, (state, action: any) => {
+    builder.addCase(getProfile.fulfilled, (state: any, action: any) => {
       state.user = action.payload;
+      state.status = "resolved";
     });
 
     builder.addCase(getProfile.rejected, (state: any, action) => {

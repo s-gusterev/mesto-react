@@ -1,19 +1,19 @@
 import { AnimatePresence, motion } from "framer-motion";
-
+import { AppDispatch } from "../store";
 import { User, Card as cardType } from "../types";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setCardLike } from "../store/cardsSlice";
 
 function Card({
   card,
-  onCardLike,
   onCardClick,
   onCardDelete,
 }: {
   card: cardType;
-  onCardLike: (card: cardType) => void;
   onCardClick: (card: cardType) => void;
   onCardDelete: (card: cardType) => void;
 }) {
+  const dispatch = useDispatch<AppDispatch>();
   const currentUser = useSelector(
     (state: { user: { user: User } }) => state.user.user
   );
@@ -54,10 +54,6 @@ function Card({
     onCardClick(card);
   }
 
-  function handleLikeClick() {
-    onCardLike(card);
-  }
-
   function handleDeleteClick() {
     onCardDelete(card);
   }
@@ -76,14 +72,14 @@ function Card({
                 transition={{ duration: 0.7 }}
                 className="card__like card__like_active"
                 type="button"
-                onClick={handleLikeClick}
+                onClick={() => dispatch(setCardLike(card))}
               ></motion.button>
             )}
             {!isLiked && (
               <button
                 className="card__like"
                 type="button"
-                onClick={handleLikeClick}
+                onClick={() => dispatch(setCardLike(card))}
               ></button>
             )}
 

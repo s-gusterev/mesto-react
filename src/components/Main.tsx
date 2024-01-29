@@ -8,20 +8,20 @@ function Main({
   onAddPlace,
   onEditProfile,
   onCardClick,
-  cards,
-  onCardLike,
   onCardDelete,
 }: {
   onEditAvatar: (isOpen: boolean) => void;
   onAddPlace: (isOpen: boolean) => void;
   onEditProfile: (isOpen: boolean) => void;
   onCardClick: (card: cardType) => void;
-  cards: cardType[];
-  onCardLike: (card: cardType) => void;
   onCardDelete: (card: cardType) => void;
 }) {
   const user = useSelector(
     (state: { user: { user: User } }) => state.user.user
+  );
+
+  const cards = useSelector(
+    (state: { cards: { cards: cardType[] } }) => state.cards.cards
   );
 
   function handleEditAvatarClick() {
@@ -74,7 +74,6 @@ function Main({
               card={card}
               key={card._id}
               onCardClick={onCardClick}
-              onCardLike={onCardLike}
               onCardDelete={onCardDelete}
             />
           ))}

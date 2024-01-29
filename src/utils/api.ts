@@ -62,7 +62,7 @@ class Api {
   }
 
   // Удаление карточки
-  delCard(id: string | number) {
+  delCard(id: string) {
     return fetch(`${this._baseUrl}/cards/${id}`, {
       method: "DELETE",
       headers: this._headers,
@@ -70,7 +70,7 @@ class Api {
   }
 
   // Удаление лайка
-  deleteLike(id: string | number) {
+  deleteLike(id: string) {
     return fetch(`${this._baseUrl}/cards/${id}/likes`, {
       method: "DELETE",
       headers: this._headers,
@@ -78,15 +78,15 @@ class Api {
   }
 
   // Добавление лайка
-  addLike(id: string | number) {
+  addLike(id: string) {
     return fetch(`${this._baseUrl}/cards/${id}/likes`, {
       method: "PUT",
       headers: this._headers,
     }).then(this._checkResponse);
   }
 
-  changeLikeCardStatus(id: string | number, isLiked: boolean) {
-    return isLiked ? this.addLike(id) : this.deleteLike(id);
+  changeLikeCardStatus(id: string, isLiked: boolean) {
+    return isLiked ? this.deleteLike(id) : this.addLike(id);
   }
 
   // Обновление аватара

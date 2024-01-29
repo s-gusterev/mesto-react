@@ -17,10 +17,11 @@ import {
   updateAvatar,
   updateUserProfile,
 } from "../store/userSlice";
+import { getInitialCards } from "../store/cardsSlice";
 
 function App() {
-  const currentUser = useSelector(
-    (state: { user: { user: User } }) => state.user.user
+  const testCards = useSelector(
+    (state: { cards: { cards: Card[] } }) => state.cards.cards
   );
 
   const dispatch = useDispatch<AppDispatch>();
@@ -33,20 +34,13 @@ function App() {
     isOpen: false,
     name: "",
     link: "",
+    _id: "",
   });
 
   useEffect(() => {
-    // Диспатчим действие для загрузки пользователя
     dispatch(getProfile());
-
-    api
-      .getInitialCards()
-      .then((res) => {
-        setCards(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    dispatch(getInitialCards());
+    console.log(testCards);
   }, []);
 
   function handleCardClick(card: Card) {
@@ -54,6 +48,7 @@ function App() {
       isOpen: true,
       name: card.name,
       link: card.link,
+      _id: card._id,
     });
   }
 
@@ -65,6 +60,7 @@ function App() {
       isOpen: false,
       name: "",
       link: "",
+      _id: "",
     });
   }
 
@@ -89,25 +85,6 @@ function App() {
     dispatch(updateAvatar(avatar));
     closeAllPopups();
   };
-
-  function handleCardLike(card: Card) {
-    if (card && card.likes && card._id) {
-      const isLiked = card?.likes.some((i) => i._id === currentUser._id);
-
-      api
-        .changeLikeCardStatus(card._id, !isLiked)
-        .then((newCard) => {
-          setCards((state) =>
-            state.map((c) => (c._id === card._id ? newCard : c))
-          );
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      console.log("Карточка не найдена");
-    }
-  }
 
   function handleCardDelete(card: Card) {
     if (card && card._id) {
@@ -146,8 +123,6 @@ function App() {
         onAddPlace={setAddPlacePopupOpen}
         onEditAvatar={setEditAvatarPopupOpen}
         onCardClick={handleCardClick}
-        cards={cards}
-        onCardLike={handleCardLike}
         onCardDelete={handleCardDelete}
       />
 
