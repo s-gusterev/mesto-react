@@ -15,7 +15,7 @@ class Api {
   }
 
   // Проверяем ответ от сервера
-  _checkResponse(res: { ok: any; json: () => any; status: any; }) {
+  _checkResponse(res: { ok: any; json: () => any; status: any }) {
     if (res.ok) {
       // Если все ок - получаем первоначальный ответ от сервера
       return res.json(); // Читаем ответ в формате json
@@ -78,14 +78,14 @@ class Api {
   }
 
   // Добавление лайка
-  addLike(id:string | number) {
+  addLike(id: string | number) {
     return fetch(`${this._baseUrl}/cards/${id}/likes`, {
       method: "PUT",
       headers: this._headers,
     }).then(this._checkResponse);
   }
 
-  changeLikeCardStatus(id: string | number , isLiked: boolean) {
+  changeLikeCardStatus(id: string | number, isLiked: boolean) {
     return isLiked ? this.addLike(id) : this.deleteLike(id);
   }
 

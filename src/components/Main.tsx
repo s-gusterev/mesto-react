@@ -1,8 +1,7 @@
-import React from "react";
-import CurrentUserContext from "../contexts/CurrentUserContext";
 import "../index.css";
 import Card from "./Card";
-import { Card as cardType } from "../types";
+import { User, Card as cardType } from "../types";
+import { useSelector } from "react-redux";
 
 function Main({
   onEditAvatar,
@@ -21,7 +20,9 @@ function Main({
   onCardLike: (card: cardType) => void;
   onCardDelete: (card: cardType) => void;
 }) {
-  const user = React.useContext(CurrentUserContext);
+  const user = useSelector(
+    (state: { user: { user: User } }) => state.user.user
+  );
 
   function handleEditAvatarClick() {
     onEditAvatar(true);

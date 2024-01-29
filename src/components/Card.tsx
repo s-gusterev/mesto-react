@@ -1,8 +1,7 @@
-import { useContext } from "react";
-import CurrentUserContext from "../contexts/CurrentUserContext";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { Card as cardType } from "../types";
+import { User, Card as cardType } from "../types";
+import { useSelector } from "react-redux";
 
 function Card({
   card,
@@ -15,7 +14,9 @@ function Card({
   onCardClick: (card: cardType) => void;
   onCardDelete: (card: cardType) => void;
 }) {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useSelector(
+    (state: { user: { user: User } }) => state.user.user
+  );
 
   const checkIsOwn = (card: cardType) => {
     if (!card.owner) {

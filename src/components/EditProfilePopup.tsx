@@ -1,8 +1,9 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import "../index.css";
 import PopupWithForm from "./PopupWithForm";
-import CurrentUserContext from "../contexts/CurrentUserContext";
+
 import { User } from "../types";
+import { useSelector } from "react-redux";
 
 type Props = {
   onClose: () => void;
@@ -10,10 +11,11 @@ type Props = {
 };
 
 function editProfilePopup(props: Props) {
+  const currentUser = useSelector(
+    (state: { user: { user: User } }) => state.user.user
+  );
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-
-  const currentUser = React.useContext(CurrentUserContext);
 
   useEffect(() => {
     setName(currentUser.name);

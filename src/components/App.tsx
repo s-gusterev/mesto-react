@@ -9,10 +9,22 @@ import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-import CurrentUserContext from "../contexts/CurrentUserContext";
 import { Card, User } from "../types";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../store";
+import {
+  getProfile,
+  updateAvatar,
+  updateUserProfile,
+} from "../store/userSlice";
 
 function App() {
+  const currentUser = useSelector(
+    (state: { user: { user: User } }) => state.user.user
+  );
+
+  const dispatch = useDispatch<AppDispatch>();
+
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
@@ -23,27 +35,9 @@ function App() {
     link: "",
   });
 
-  const [currentUser, setCurrentUser] = useState({
-    name: "",
-    about: "",
-    avatar: "",
-    _id: "",
-  });
-
   useEffect(() => {
-    api
-      .getProfile()
-      .then((res) => {
-        setCurrentUser({
-          name: res.name,
-          about: res.about,
-          avatar: res.avatar,
-          _id: res._id,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // Диспатчим действие для загрузки пользователя
+    dispatch(getProfile());
 
     api
       .getInitialCards()
@@ -73,6 +67,28 @@ function App() {
       link: "",
     });
   }
+
+  /**
+   * Обновляет данные пользователя
+   *
+   * @param user - Объект пользователя, содержащий новую информацию об имени и о себе
+   */
+  const handleUpdateUser = (user: Pick<User, "name" | "about">) => {
+    const { name, about } = user;
+    dispatch(updateUserProfile({ name, about }));
+    closeAllPopups();
+  };
+
+  /**
+   * Обрабатывает обновление аватара пользователя.
+   *
+   * @param user - Объект пользователя с новой информацией об аватаре
+   */
+  const handleUpdateAvatar = (user: Pick<User, "avatar">) => {
+    const { avatar } = user;
+    dispatch(updateAvatar(avatar));
+    closeAllPopups();
+  };
 
   function handleCardLike(card: Card) {
     if (card && card.likes && card._id) {
@@ -108,46 +124,8 @@ function App() {
     }
   }
 
-  function handleUpdateUser(user: Pick<User, "name" | "about">) {
-    const { name, about } = user;
-
-    api
-      .editProfile(name, about)
-      .then((res) => {
-        setCurrentUser({
-          name: res.name,
-          about: res.about,
-          avatar: res.avatar,
-          _id: res._id,
-        });
-        closeAllPopups();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  function handleUpdateAvatar(user: Pick<User, "avatar">) {
-    const { avatar } = user;
-    api
-      .updateAvatar(avatar)
-      .then((res) => {
-        setCurrentUser({
-          avatar: res.avatar,
-          name: res.name,
-          about: res.about,
-          _id: res._id,
-        });
-        closeAllPopups();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
   function handleAddPlaceSubmit(card: Card) {
     const { name, link } = card;
-
     api
       .addCard(name, link)
       .then((res) => {
@@ -160,49 +138,47 @@ function App() {
   }
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <div className="root__container">
-        <Header />
+    <div className="root__container">
+      <Header />
 
-        <Main
-          onEditProfile={setEditProfilePopupOpen}
-          onAddPlace={setAddPlacePopupOpen}
-          onEditAvatar={setEditAvatarPopupOpen}
-          onCardClick={handleCardClick}
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-        />
+      <Main
+        onEditProfile={setEditProfilePopupOpen}
+        onAddPlace={setAddPlacePopupOpen}
+        onEditAvatar={setEditAvatarPopupOpen}
+        onCardClick={handleCardClick}
+        cards={cards}
+        onCardLike={handleCardLike}
+        onCardDelete={handleCardDelete}
+      />
 
-        <Footer />
-        <AnimatePresence mode="wait">
-          {isEditProfilePopupOpen && (
-            <EditProfilePopup
-              onClose={closeAllPopups}
-              onUpdateUser={handleUpdateUser}
-            />
-          )}
+      <Footer />
+      <AnimatePresence mode="wait">
+        {isEditProfilePopupOpen && (
+          <EditProfilePopup
+            onClose={closeAllPopups}
+            onUpdateUser={handleUpdateUser}
+          />
+        )}
 
-          {isAddPlacePopupOpen && (
-            <AddPlacePopup
-              onClose={closeAllPopups}
-              onAddPlace={handleAddPlaceSubmit}
-            />
-          )}
+        {isAddPlacePopupOpen && (
+          <AddPlacePopup
+            onClose={closeAllPopups}
+            onAddPlace={handleAddPlaceSubmit}
+          />
+        )}
 
-          {isEditAvatarPopupOpen && (
-            <EditAvatarPopup
-              onClose={closeAllPopups}
-              onUpdateAvatar={handleUpdateAvatar}
-            />
-          )}
+        {isEditAvatarPopupOpen && (
+          <EditAvatarPopup
+            onClose={closeAllPopups}
+            onUpdateAvatar={handleUpdateAvatar}
+          />
+        )}
 
-          {selectedCard.isOpen && (
-            <ImagePopup onClose={closeAllPopups} card={selectedCard} />
-          )}
-        </AnimatePresence>
-      </div>
-    </CurrentUserContext.Provider>
+        {selectedCard.isOpen && (
+          <ImagePopup onClose={closeAllPopups} card={selectedCard} />
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 
