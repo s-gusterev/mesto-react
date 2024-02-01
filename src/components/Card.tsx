@@ -1,29 +1,23 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { AppDispatch } from "../store";
-import { User, Card as cardType } from "../types";
-import { useSelector, useDispatch } from "react-redux";
-import { setCardLike } from "../store/cardsSlice";
+import { Card as cardType } from "../types";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { setCardLike, deleteCard } from "../store/cardsSlice";
 
-function Card({
-  card,
-  onCardClick,
-  onCardDelete,
-}: {
+type Props = {
   card: cardType;
   onCardClick: (card: cardType) => void;
-  onCardDelete: (card: cardType) => void;
-}) {
-  const dispatch = useDispatch<AppDispatch>();
-  const currentUser = useSelector(
-    (state: { user: { user: User } }) => state.user.user
-  );
+};
+
+const Card = ({ card, onCardClick }: Props) => {
+  const dispatch = useAppDispatch();
+  const currentUser = useAppSelector((state) => state.user.user._id);
 
   const checkIsOwn = (card: cardType) => {
     if (!card.owner) {
       return false;
     }
 
-    return card.owner._id === currentUser._id;
+    return card.owner._id === currentUser;
   };
 
   const isOwn = checkIsOwn(card);
@@ -36,7 +30,7 @@ function Card({
     if (!card.likes) {
       return false;
     }
-    return card.likes.some((i) => i._id === currentUser._id);
+    return card.likes.some((i) => i._id === currentUser);
   };
 
   const isLiked = checkIsLiked(card);
@@ -50,13 +44,9 @@ function Card({
 
   const likes = counterLikes(card);
 
-  function handleClick() {
+  const handleClick = () => {
     onCardClick(card);
-  }
-
-  function handleDeleteClick() {
-    onCardDelete(card);
-  }
+  };
 
   return (
     <AnimatePresence initial={false} mode="wait">
@@ -94,11 +84,11 @@ function Card({
         <button
           className={cardDeleteButtonClassName}
           type="button"
-          onClick={handleDeleteClick}
+          onClick={() => dispatch(deleteCard(card))}
         ></button>
       </li>
     </AnimatePresence>
   );
-}
+};
 
 export default Card;

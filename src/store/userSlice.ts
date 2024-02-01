@@ -3,7 +3,25 @@ import api from "../utils/api";
 import { User } from "../types";
 import { setSuccess, setLoading, setError } from "./utils";
 
-// Получение юзера
+type StateUser = {
+  user: User;
+  status: Nullable<string>;
+  error: Nullable<string>;
+};
+
+type Nullable<T> = null | T;
+
+const initialState: StateUser = {
+  user: {
+    name: "",
+    about: "",
+    avatar: "https://lipsum.app/120x120",
+    _id: "",
+  },
+  status: null,
+  error: null,
+};
+
 export const getProfile = createAsyncThunk(
   "user/getProfile",
   async (_, { rejectWithValue }) => {
@@ -17,7 +35,7 @@ export const getProfile = createAsyncThunk(
     }
   }
 );
-//  Обновление аватара
+
 export const updateAvatar = createAsyncThunk(
   "user/updateAvatar",
   async (avatar: string, { rejectWithValue, dispatch }) => {
@@ -47,38 +65,15 @@ export const updateUserProfile = createAsyncThunk(
   }
 );
 
-// const setError = (
-//   state: { status: any; error: any },
-//   action: { payload: any }
-// ) => {
-//   state.status = "rejected";
-//   state.error = action.payload;
-// };
-
-// const setLoading = (state: { status: any; error: any }) => {
-//   state.status = "pending";
-//   state.error = null;
-// };
-
-// const setSuccess = (state: { status: any; error: any }) => {
-//   state.status = "resolved";
-//   state.error = null;
-// };
-
 const userSlice = createSlice({
   name: "user",
-  initialState: {
-    user: <User>{},
-    status: null,
-    error: null,
-  },
+  initialState,
   reducers: {
     setUser(state, action) {
       state.user = action.payload;
     },
   },
   extraReducers: (builder) => {
-    // Получение юзера при загрузке страницы
     builder.addCase(getProfile.pending, (state) => {
       state.user = {
         name: "Загрузка...",
@@ -104,12 +99,10 @@ const userSlice = createSlice({
       };
     });
 
-    // Обновление аватара
     builder.addCase(updateAvatar.pending, setLoading);
     builder.addCase(updateAvatar.fulfilled, setSuccess);
     builder.addCase(updateAvatar.rejected, setError);
 
-    // Обновление профиля
     builder.addCase(updateUserProfile.pending, setLoading);
     builder.addCase(updateUserProfile.fulfilled, setSuccess);
     builder.addCase(updateUserProfile.rejected, setError);

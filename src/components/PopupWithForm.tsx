@@ -11,7 +11,7 @@ type PopupWithFormProps = {
   children: React.ReactNode;
 };
 
-function PopupWithForm(props: PopupWithFormProps) {
+const PopupWithForm = (props: PopupWithFormProps) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -48,6 +48,6 @@ function PopupWithForm(props: PopupWithFormProps) {
       </motion.form>
     </motion.div>
   );
-}
+};
 
 export default PopupWithForm;

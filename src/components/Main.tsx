@@ -1,28 +1,25 @@
 import "../index.css";
 import Card from "./Card";
-import { User, Card as cardType } from "../types";
-import { useSelector } from "react-redux";
+import { Card as cardType } from "../types";
 
-function Main({
-  onEditAvatar,
-  onAddPlace,
-  onEditProfile,
-  onCardClick,
-  onCardDelete,
-}: {
+import { useAppSelector } from "../store/hooks";
+
+type Props = {
   onEditAvatar: (isOpen: boolean) => void;
   onAddPlace: (isOpen: boolean) => void;
   onEditProfile: (isOpen: boolean) => void;
   onCardClick: (card: cardType) => void;
-  onCardDelete: (card: cardType) => void;
-}) {
-  const user = useSelector(
-    (state: { user: { user: User } }) => state.user.user
-  );
+};
 
-  const cards = useSelector(
-    (state: { cards: { cards: cardType[] } }) => state.cards.cards
-  );
+const Main = ({
+  onEditAvatar,
+  onAddPlace,
+  onEditProfile,
+  onCardClick,
+}: Props) => {
+  const { name, about, avatar } = useAppSelector((state) => state.user.user);
+
+  const cards = useAppSelector((state) => state.cards.cards);
 
   function handleEditAvatarClick() {
     onEditAvatar(true);
@@ -41,7 +38,7 @@ function Main({
         <div className="profile__info">
           <div
             className="profile__avatar"
-            style={{ backgroundImage: `url(${user.avatar})` }}
+            style={{ backgroundImage: `url(${avatar})` }}
           >
             <button
               className="profile__btn-edit-avatar"
@@ -51,8 +48,8 @@ function Main({
             ></button>
           </div>
           <div className="profile__name">
-            <h1 className="profile__title">{user.name}</h1>
-            <p className="profile__subtitle">{user.about}</p>
+            <h1 className="profile__title">{name}</h1>
+            <p className="profile__subtitle">{about}</p>
             <button
               className="profile__btn-edit-profile"
               type="button"
@@ -70,17 +67,12 @@ function Main({
 
         <ul className="cards">
           {cards.map((card: cardType) => (
-            <Card
-              card={card}
-              key={card._id}
-              onCardClick={onCardClick}
-              onCardDelete={onCardDelete}
-            />
+            <Card card={card} key={card._id} onCardClick={onCardClick} />
           ))}
         </ul>
       </section>
     </main>
   );
-}
+};
 
 export default Main;

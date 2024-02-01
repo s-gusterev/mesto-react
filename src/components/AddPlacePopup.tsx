@@ -5,36 +5,36 @@ import { Card } from "../types";
 
 type Props = {
   onClose: () => void;
-  onAddPlace: (card: Card) => void;
+  onAddPlace: (card: Pick<Card, "name" | "link">) => void;
 };
 
-function AddPlacePopup(props: Props) {
+const AddPlacePopup = ({ onClose, onAddPlace }: Props) => {
   const [name, setName] = useState("");
   const [link, setLink] = useState("");
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    props.onAddPlace({
+    onAddPlace({
       name,
       link,
     });
-  }
+  };
 
-  function handleChangeName(e: ChangeEvent<HTMLInputElement>) {
+  const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
-  }
+  };
 
-  function handleChangeLInk(e: ChangeEvent<HTMLInputElement>) {
+  const handleChangeLInk = (e: ChangeEvent<HTMLInputElement>) => {
     setLink(e.target.value);
-  }
+  };
 
   return (
     <PopupWithForm
       title="Новое место"
       name="card-add"
       btnText="Создать"
-      onClose={props.onClose}
+      onClose={onClose}
       onSubmit={handleSubmit}
     >
       <label className="popup__label" htmlFor="input-place">
@@ -65,9 +65,8 @@ function AddPlacePopup(props: Props) {
         />
         <span className="popup__input-error input-image-error"></span>
       </label>
-      "
     </PopupWithForm>
   );
-}
+};
 
 export default AddPlacePopup;

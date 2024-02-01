@@ -6,11 +6,11 @@ import { User } from "../types";
 import { useSelector } from "react-redux";
 
 type Props = {
-  onClose: () => void;
   onUpdateUser: (user: Pick<User, "name" | "about">) => void;
+  onClose: () => void;
 };
 
-function editProfilePopup(props: Props) {
+const editProfilePopup = ({ onClose, onUpdateUser }: Props) => {
   const currentUser = useSelector(
     (state: { user: { user: User } }) => state.user.user
   );
@@ -22,29 +22,29 @@ function editProfilePopup(props: Props) {
     setDescription(currentUser.about);
   }, [currentUser]);
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    props.onUpdateUser({
+    onUpdateUser({
       name,
       about: description,
     });
-  }
+  };
 
-  function handleChangeName(e: ChangeEvent<HTMLInputElement>) {
+  const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
-  }
+  };
 
-  function handleChangeNDescription(e: ChangeEvent<HTMLInputElement>) {
+  const handleChangeNDescription = (e: ChangeEvent<HTMLInputElement>) => {
     setDescription(e.target.value);
-  }
+  };
 
   return (
     <PopupWithForm
       title="Редактировать профиль"
       name="profile"
       btnText="Сохранить"
-      onClose={props.onClose}
+      onClose={onClose}
       onSubmit={handleSubmit}
     >
       <label className="popup__label" htmlFor="input-name">
@@ -79,6 +79,6 @@ function editProfilePopup(props: Props) {
       </label>
     </PopupWithForm>
   );
-}
+};
 
 export default editProfilePopup;

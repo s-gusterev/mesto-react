@@ -2,7 +2,12 @@ import "../index.css";
 import { Card } from "../types";
 import { motion } from "framer-motion";
 
-function ImagePopup({ card, onClose }: { card: Card; onClose: () => void }) {
+type Props = {
+  card: Card;
+  onClose: () => void;
+};
+
+const ImagePopup = ({ card, onClose }: Props) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -31,6 +36,6 @@ function ImagePopup({ card, onClose }: { card: Card; onClose: () => void }) {
       </motion.div>
     </motion.div>
   );
-}
+};
 
 export default ImagePopup;

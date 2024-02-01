@@ -1,5 +1,4 @@
 import { useRef, FormEvent } from "react";
-
 import "../index.css";
 import PopupWithForm from "./PopupWithForm";
 
@@ -10,13 +9,13 @@ type Props = {
   onUpdateAvatar: (user: Pick<User, "avatar">) => void;
 };
 
-function editAvatarPopup(props: Props) {
+const editAvatarPopup = ({ onClose, onUpdateAvatar }: Props) => {
   const valueRef = useRef<HTMLInputElement>(null!);
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    props.onUpdateAvatar({
+    onUpdateAvatar({
       avatar: valueRef.current.value,
     });
   }
@@ -26,7 +25,7 @@ function editAvatarPopup(props: Props) {
       title="Обновить аватар"
       name="edit-avatar"
       btnText="Обновить"
-      onClose={props.onClose}
+      onClose={onClose}
       onSubmit={handleSubmit}
     >
       <label className="popup__label" htmlFor="input-avatar">
@@ -43,6 +42,6 @@ function editAvatarPopup(props: Props) {
       </label>
     </PopupWithForm>
   );
-}
+};
 
 export default editAvatarPopup;
