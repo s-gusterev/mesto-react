@@ -1,6 +1,7 @@
-import "../index.css";
-import { Card } from "../types";
-import { motion } from "framer-motion";
+import { useEffect } from 'react';
+import '../index.css';
+import { Card } from '../types';
+import { motion } from 'framer-motion';
 
 type Props = {
   card: Card;
@@ -8,6 +9,16 @@ type Props = {
 };
 
 const ImagePopup = ({ card, onClose }: Props) => {
+  useEffect(() => {
+    const close = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', close);
+    return () => window.removeEventListener('keydown', close);
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -16,6 +27,12 @@ const ImagePopup = ({ card, onClose }: Props) => {
       transition={{ duration: 0.5 }}
       key={card._id}
       className="popup popup_background_dark popup_type_picture root__popup"
+      onClick={(e) => {
+        e.stopPropagation();
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
     >
       <motion.div
         className="popup__container"

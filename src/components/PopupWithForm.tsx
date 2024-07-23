@@ -1,6 +1,6 @@
-import { FormEvent } from "react";
-import { motion } from "framer-motion";
-import "../index.css";
+import { FormEvent, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import '../index.css';
 
 type PopupWithFormProps = {
   name: string;
@@ -12,6 +12,16 @@ type PopupWithFormProps = {
 };
 
 const PopupWithForm = (props: PopupWithFormProps) => {
+  useEffect(() => {
+    const close = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        props.onClose();
+      }
+    };
+    window.addEventListener('keydown', close);
+    return () => window.removeEventListener('keydown', close);
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -20,6 +30,12 @@ const PopupWithForm = (props: PopupWithFormProps) => {
       transition={{ duration: 0.7 }}
       key={props.name}
       className={`popup popup_background_light popup_type_${props.name} root__popup`}
+      onClick={(e) => {
+        e.stopPropagation();
+        if (e.target === e.currentTarget) {
+          props.onClose();
+        }
+      }}
     >
       <motion.form
         initial={{ opacity: 0, y: -100 }}
