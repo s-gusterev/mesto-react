@@ -1,10 +1,17 @@
-import React from "react";
-import CurrentUserContext from "../contexts/CurrentUserContext";
-import "../index.css";
-import Card from "./Card";
+import React from 'react';
+import CurrentUserContext from '../contexts/CurrentUserContext';
+import '../index.css';
+import Card from './Card';
 
-function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick, cards, onCardLike, onCardDelete }) {
-
+function Main({
+  onEditAvatar,
+  onAddPlace,
+  onEditProfile,
+  onCardClick,
+  cards,
+  onCardLike,
+  onCardDelete,
+}) {
   const user = React.useContext(CurrentUserContext);
 
   function handleEditAvatarClick() {
@@ -39,7 +46,7 @@ function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick, cards, onC
             <button
               className="profile__btn-edit-profile"
               type="button"
-              aria-label="Редактировать данные профиля"
+              aria-label="Редактировать профиль"
               onClick={handleEditProfileClick}
             ></button>
           </div>
@@ -52,7 +59,7 @@ function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick, cards, onC
         </div>
         <ul className="cards">
           {cards.map((card) => (
-            < Card
+            <Card
               card={card}
               key={card._id}
               onCardClick={onCardClick}

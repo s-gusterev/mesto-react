@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
-import "../index.css";
-import PopupWithForm from "./PopupWithForm";
-import CurrentUserContext from "../contexts/CurrentUserContext"
+import React, { useState, useEffect } from 'react';
+import '../index.css';
+import PopupWithForm from './PopupWithForm';
+import CurrentUserContext from '../contexts/CurrentUserContext';
 
 function editProfilePopup(props) {
-
   const [name, setName] = useState('');
-  const [description, setDescription] = useState('')
+  const [description, setDescription] = useState('');
 
   const currentUser = React.useContext(CurrentUserContext);
 
@@ -14,7 +13,6 @@ function editProfilePopup(props) {
     setName(currentUser.name);
     setDescription(currentUser.about);
   }, [currentUser]);
-
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -73,7 +71,7 @@ function editProfilePopup(props) {
         <span className="popup__input-error input-about-error"></span>
       </label>
     </PopupWithForm>
-  )
+  );
 }
 
 export default editProfilePopup;

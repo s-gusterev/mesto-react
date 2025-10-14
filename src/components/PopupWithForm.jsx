@@ -1,10 +1,13 @@
-import React from "react";
-import "../index.css";
+import React from 'react';
+import '../index.css';
 
 function PopupWithForm(props) {
   return (
     <div
-      className={`${props.isOpen ? "popup_opened" : ""} popup popup_background_light popup_type_${props.name} root__popup`}>
+      className={`${
+        props.isOpen ? 'popup_opened' : ''
+      } popup popup_background_light popup_type_${props.name} root__popup`}
+    >
       <form
         className="popup__container popup__container_type_form"
         name={props.name}

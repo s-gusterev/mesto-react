@@ -1,18 +1,17 @@
-import React, { useState } from "react";
-import "../index.css";
-import PopupWithForm from "./PopupWithForm";
+import React, { useState } from 'react';
+import '../index.css';
+import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup(props) {
-
   const [name, setName] = useState('');
-  const [link, setLink] = useState('')
+  const [link, setLink] = useState('');
 
   function handleSubmit(e) {
     e.preventDefault();
 
     props.onAddPlace({
       name,
-      link
+      link,
     });
   }
 
@@ -20,7 +19,7 @@ function AddPlacePopup(props) {
     setName(e.target.value);
   }
 
-  function handleChangeLInk(e) {
+  function handleChangeLink(e) {
     setLink(e.target.value);
   }
 
@@ -57,14 +56,12 @@ function AddPlacePopup(props) {
           required
           placeholder="Ссылка на картинку"
           value={link}
-          onChange={handleChangeLInk}
+          onChange={handleChangeLink}
         />
         <span className="popup__input-error input-image-error"></span>
       </label>
-      "
     </PopupWithForm>
-  )
-
+  );
 }
 
 export default AddPlacePopup;

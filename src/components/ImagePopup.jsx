@@ -1,11 +1,15 @@
-import React from "react";
-import "../index.css";
+import React from 'react';
+import '../index.css';
 
-function ImagePopup({card,onClose}) {
+function ImagePopup({ card, onClose }) {
   return (
-    <div className={`${card.isOpen ? "popup_opened" : ""} popup popup_background_dark popup_type_picture root__popup`} >
+    <div
+      className={`${
+        card.isOpen ? 'popup_opened' : ''
+      } popup popup_background_dark popup_type_picture root__popup`}
+    >
       <div className="popup__container">
-      <img src={card.link} alt={card.name} className="popup__img"/>
+        <img src={card.link} alt={card.name} className="popup__img" />
         <p className="popup__img-description">{card.name}</p>
         <button
           className="popup__close"
